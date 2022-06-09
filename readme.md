@@ -113,7 +113,7 @@ IAMコンソール画面の左ペインから「ロールを選択」
 
 ![Lambda全体](./img/Lambda全体.png)  
 
-Lambdaも2つ用意する  
+Lambdaを2つ用意する  
 1.ksap-seatingstatehistory-tblへのデータ登録をトリガーに  
 SeatNameをキーにして、ksap-seatingstate-tblにデータをUpdateする関数  
 (updateSeatingStateHistoryTableFunc)  
