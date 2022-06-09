@@ -4,8 +4,10 @@
 - [全体概要](#content1)  
 - [ESP32で人感センサの操作](#content2)  
 - [Raspberry Piでデータ送受信](#content3)  
-- [データ受信して、DynamoDBへ登録するまでの流れ](#content4)  
-
+- [モノの作成](#content4)  
+- [DynamoDBの作成](#content5)  
+- [IAMロールの作成](#content6)  
+- [Lambdaの作成](#content7)  
 
 <h2 id="content1">全体概要</h2>  
 
@@ -44,60 +46,68 @@ Raspberry Piのセットアップは[こちら](https://github.com/ksaplabo-org/
 
 ※ソースは検討中  
 
-<h2 id="content4">データ受信して、DynamoDBへ登録するまでの流れ</h2>  
+<h2 id="content4">モノの作成</h2>  
  
-- Iot Coreで「モノ」の作成  
-  作成方法については[こちら](https://github.com/ksaplabo-org/aircondition#awsiot-core%E3%81%A7%E3%83%A2%E3%83%8E%E6%83%85%E5%A0%B1%E3%82%92%E4%BD%9C%E6%88%90)を参照  
-  モノの名前は任意で作成  
+Iot Coreで「モノ」の作成  
+作成方法については[こちら](https://github.com/ksaplabo-org/aircondition#awsiot-core%E3%81%A7%E3%83%A2%E3%83%8E%E6%83%85%E5%A0%B1%E3%82%92%E4%BD%9C%E6%88%90)を参照  
+モノの名前は任意で作成  
 
-  MQTTテストクライアントで受信するとこを確認出来たら、DynamoDBの作成を行う  
+MQTTテストクライアントで受信するとこを確認出来たら、DynamoDBの作成を行う  
 
-- DynamoDBの作成  
-  今回はDynamoDBを2つ用意する。  
-  1.受信したデータを全て登録するDynamoDB  
-  2.座席名ごとに着席情報を管理するDynamoDB  
-  
-  1.受信したデータを全て登録するDynamoDB  
+<h2 id="content5">DynamoDBの作成</h2>
 
-  DynamoDBを作成方法は[こちら](https://github.com/ksaplabo-org/aircondition#aws%E5%8F%97%E4%BF%A1%E3%81%97%E3%81%9F%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92dynamodb%E3%81%AB%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B)を参照  
-  今回作成するDynamoDB名は以下の通り ※名前は任意  
-  DynamoDB名：ksap-seatingstatehistory-tbl  
-  
-  DynamoDBのコンソール画面から「テーブル」＞「項目の探索」を選択し  
-  作成したDynamoDBを選択  
-  「項目の作成」を選択して、以下のテストデータを作成  
+今回はDynamoDBを2つ用意する。  
+1.受信したデータを全て登録するDynamoDB  
+2.座席名ごとに着席情報を管理するDynamoDB  
 
-  ![1DynamoDB](./img/1DynamoDB.png)  
+1.受信したデータを全て登録するDynamoDB  
 
-  項目名は任意だが、この後のソースでこの名前を使用するため後で迷わないように  
+DynamoDBを作成方法は[こちら](https://github.com/ksaplabo-org/aircondition#aws%E5%8F%97%E4%BF%A1%E3%81%97%E3%81%9F%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92dynamodb%E3%81%AB%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B)を参照  
+今回作成するDynamoDB名は以下の通り ※名前は任意  
+DynamoDB名：ksap-seatingstatehistory-tbl  
 
-  2.座席名ごとに着席情報を管理するDynamoDB  
+DynamoDBのコンソール画面から「テーブル」＞「項目の探索」を選択し  
+作成したDynamoDBを選択  
+「項目の作成」を選択して、以下のテストデータを作成  
 
-  1と同様の手順でテストデータまで作成  
-  DynamoDB名：ksap-seatingstate-tbl  
+![1DynamoDB](./img/1DynamoDB.png)  
 
-  ![2-1DynamoDB](./img/2-1DynamoDB.png)  
-  ![2-2DynamoDB](./img/2-2DynamoDB.png)  
+項目名は任意だが、この後のソースでこの名前を使用するため後で迷わないように  
 
+2.座席名ごとに着席情報を管理するDynamoDB  
 
-- IAMロールの作成  
+1と同様の手順でテストデータまで作成  
+DynamoDB名：ksap-seatingstate-tbl  
 
-  LambdaがDynamoDBにアクセスするためのIAMロールを作成  
+![2-1DynamoDB](./img/2-1DynamoDB.png)  
+![2-2DynamoDB](./img/2-2DynamoDB.png)  
 
 
+<h2 id="content6">IAMロールの作成</h2>
 
-- Lambdaの作成  
+LambdaがDynamoDBにアクセスするためのIAMロールを作成  
 
-  ![Lambda全体](./img/Lambda全体.png)  
+IAMコンソール画面の左ペインから「ロールを選択」  
+「ロール」の設定画面から「ロールの作成」ボタンを選択  
+![1-1IAM](./img/1-1IAM.png)  
 
-  Lambdaも2つ用意する  
-  1.ksap-seatingstatehistory-tblへのデータ登録をトリガーに  
-    SeatNameをキーにして、ksap-seatingstate-tblにデータをUpdateする関数  
-    (updateSeatingStateHistoryTableFunc)  
-  2.APIGatewayからのリスエストをトリガーに  
-    ksap-seatingstate-tblのデータを取得する関数  
-    (getSeatingStateTableFunc)  
+「信頼されたエンティティタイプ」はデフォルトの「AWSのサービス」を選択  
+「ユースケース」は「Lambda」を選択  
+![1-2IAM](./img/1-2IAM.png)  
 
-  1.updateSeatingStateHistoryTableFunc  
+<h2 id="content7">Lambdaの作成</h2>
+
+![Lambda全体](./img/Lambda全体.png)  
+
+Lambdaも2つ用意する  
+1.ksap-seatingstatehistory-tblへのデータ登録をトリガーに  
+SeatNameをキーにして、ksap-seatingstate-tblにデータをUpdateする関数  
+(updateSeatingStateHistoryTableFunc)  
+
+2.APIGatewayからのリスエストをトリガーに  
+ksap-seatingstate-tblのデータを取得する関数  
+(getSeatingStateTableFunc)  
+
+1.updateSeatingStateHistoryTableFunc  
 
 
