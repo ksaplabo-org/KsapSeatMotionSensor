@@ -109,19 +109,38 @@ IAMコンソール画面の左ペインから「ロールを選択」
 ロールの作成が完了するとロールの一覧に「LambdaAccess2DynamoDB」が登録されます  
 ![1-6IAM](./img/1-6IAM.png)  
 
+
 <h2 id="content7">Lambdaの作成</h2>
 
 ![Lambda全体](./img/Lambda全体.png)  
 
 Lambdaを2つ用意する  
+
 1.ksap-seatingstatehistory-tblへのデータ登録をトリガーに  
 SeatNameをキーにして、ksap-seatingstate-tblにデータをUpdateする関数  
-(updateSeatingStateHistoryTableFunc)  
+(関数名：updateSeatingStateHistoryTableFunc)  
 
 2.APIGatewayからのリスエストをトリガーに  
 ksap-seatingstate-tblのデータを取得する関数  
-(getSeatingStateTableFunc)  
+(関数名：getSeatingStateTableFunc)  
 
 1.updateSeatingStateHistoryTableFunc  
+
+Lambdaコンソールから「関数の作成」を選択  
+![1-1lambda](./img/1-1lambda.png)  
+
+オプションはデフォルトの「一から作成」を選択  
+関数名は「updateSeatingStateHistoryTableFunc」を入力  
+ランタイムは「Python3.9」を選択  
+アーキテクチャはデフォルトのまま  
+![1-2lambda](./img/1-2lambda.png)  
+
+「デフォルトの実行ロールの変更」を開き  
+「既存のロールを使用する」を選択  
+既存ロールの一覧から先ほど作成した「LambdaAccess2DynamoDB」を選択  
+詳細設定はそのままで、関数の作成を選択  
+![1-3lambda](./img/1-3lambda.png)  
+
+
 
 
