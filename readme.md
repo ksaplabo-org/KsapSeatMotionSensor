@@ -80,3 +80,5 @@ Raspberry Piのセットアップは[こちら](https://github.com/ksaplabo-org/
   ![2-2DynamoDB](./img/2-2DynamoDB.png)  
 
 - Lambdaの作成  
+
+![Lambda全体](./img/Lambda全体.png)  
