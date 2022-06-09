@@ -46,6 +46,7 @@ Raspberry Piのセットアップは[こちら](https://github.com/ksaplabo-org/
 
 ※ソースは検討中  
 
+
 <h2 id="content4">モノの作成</h2>  
  
 Iot Coreで「モノ」の作成  
@@ -53,6 +54,7 @@ Iot Coreで「モノ」の作成
 モノの名前は任意で作成  
 
 MQTTテストクライアントで受信するとこを確認出来たら、DynamoDBの作成を行う  
+
 
 <h2 id="content5">DynamoDBの作成</h2>
 
@@ -92,8 +94,17 @@ IAMコンソール画面の左ペインから「ロールを選択」
 ![1-1IAM](./img/1-1IAM.png)  
 
 「信頼されたエンティティタイプ」はデフォルトの「AWSのサービス」を選択  
-「ユースケース」は「Lambda」を選択  
+「ユースケース」は「Lambda」を選択し、「次へ」を選択  
 ![1-2IAM](./img/1-2IAM.png)  
+
+「許可を追加」画面で以下の二つのポロしーを選択して、「次へ」を選択  
+・AmazonDynamoDBFullAccess  
+・AWSLambdaDynamoDBExecutionRole  
+![1-3IAM](./img/1-3IAM.png)  
+
+「ロール名」に「LambdaAccess2DynamoDB」と入力し、右下の「ロールを作成」を選択  
+![1-4IAM](./img/1-4IAM.png)  
+![1-5IAM](./img/1-5IAM.png)  
 
 <h2 id="content7">Lambdaの作成</h2>
 
