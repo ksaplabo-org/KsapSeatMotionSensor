@@ -106,6 +106,9 @@ IAMコンソール画面の左ペインから「ロールを選択」
 ![1-4IAM](./img/1-4IAM.png)  
 ![1-5IAM](./img/1-5IAM.png)  
 
+ロールの作成が完了するとロールの一覧に「LambdaAccess2DynamoDB」が登録されます  
+![1-6IAM](./img/1-6IAM.png)  
+
 <h2 id="content7">Lambdaの作成</h2>
 
 ![Lambda全体](./img/Lambda全体.png)  
