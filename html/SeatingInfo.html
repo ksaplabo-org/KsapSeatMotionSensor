@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>札幌支店着席情報</title>
+      <meta charset="utf-8" />
+      <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
+      <script language="JavaScript">
+          posturl = "https://byhqkh8xf5.execute-api.ap-northeast-1.amazonaws.com/APIseatstage"
+          var jsondata = {"OperationType": "SCAN"};
+
+          $.ajax({
+            dataType : "json",
+            data : JSON.stringify(jsondata),
+            type : "POST",
+            url : posturl,
+            success: function(ret){
+              alert("OK!");
+              alert(ret);
+            }
+          });
+      </script>
+  </head>
+  <body>
+    <h2>札幌支店着席情報</h2>
+    <hr>
+    <button type="submit" >更新</button>>
+    <div>
+      <input type="text" value="大澤">
+      <input id="oosawa_label" type="text">
+    </div>
+    <div>
+      <input type="text" value="中谷">
+      <input id="nakaya_label" type="text">
+    </div>
+  </body>
+</html>
