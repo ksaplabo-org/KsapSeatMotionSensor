@@ -66,5 +66,17 @@ Raspberry Piのセットアップは[こちら](https://github.com/ksaplabo-org/
   DynamoDBのコンソール画面から「テーブル」＞「項目の探索」を選択し  
   作成したDynamoDBを選択  
   「項目の作成」を選択して、以下のテストデータを作成  
+
   ![1DynamoDB](./img/1DynamoDB.png)  
 
+  項目名は任意だが、この後のソースでこの名前を使用するため後で迷わないように  
+
+  2.座席名ごとに着席情報を管理するDynamoDB  
+
+  1と同様の手順でテストデータまで作成  
+  DynamoDB名：ksap-seatingstate-tbl  
+
+  ![2-1DynamoDB](./img/2-1DynamoDB.png)  
+  ![2-2DynamoDB](./img/2-2DynamoDB.png)  
+
+- Lambdaの作成  
