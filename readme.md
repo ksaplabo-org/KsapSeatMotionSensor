@@ -4,6 +4,7 @@
 - [全体概要](#content1)  
 - [ESP32で人感センサの操作](#content2)  
 - [Raspberry Piでデータ送受信](#content3)  
+- [データ受信して、DynamoDBへ登録するまでの流れ](#content4)  
 
 
 <h2 id="content1">全体概要</h2>  
@@ -41,3 +42,12 @@ ESP32と人感センサの配線は以下のように組む
 
 Raspberry Piのセットアップは[こちら](https://github.com/ksaplabo-org/Raspi-Setup)を参照  
 
+※ソースは検討中  
+
+<h2 id="content4">データ受信して、DynamoDBへ登録するまでの流れ</h2>  
+
+- Iot Coreで「モノ」の作成  
+作成方法については[こちら]()を参照  
+
+- Iot Coreで「モノ」の作成  
+  作成方法については[こちら]()を参照  
