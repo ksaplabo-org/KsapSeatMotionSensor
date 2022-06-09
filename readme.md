@@ -79,6 +79,25 @@ Raspberry Piのセットアップは[こちら](https://github.com/ksaplabo-org/
   ![2-1DynamoDB](./img/2-1DynamoDB.png)  
   ![2-2DynamoDB](./img/2-2DynamoDB.png)  
 
+
+- IAMロールの作成  
+
+  LambdaがDynamoDBにアクセスするためのIAMロールを作成  
+
+
+
 - Lambdaの作成  
 
-![Lambda全体](./img/Lambda全体.png)  
+  ![Lambda全体](./img/Lambda全体.png)  
+
+  Lambdaも2つ用意する  
+  1.ksap-seatingstatehistory-tblへのデータ登録をトリガーに  
+    SeatNameをキーにして、ksap-seatingstate-tblにデータをUpdateする関数  
+    (updateSeatingStateHistoryTableFunc)  
+  2.APIGatewayからのリスエストをトリガーに  
+    ksap-seatingstate-tblのデータを取得する関数  
+    (getSeatingStateTableFunc)  
+
+  1.updateSeatingStateHistoryTableFunc  
+
+
