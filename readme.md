@@ -45,9 +45,6 @@ Raspberry Piのセットアップは[こちら](https://github.com/ksaplabo-org/
 ※ソースは検討中  
 
 <h2 id="content4">データ受信して、DynamoDBへ登録するまでの流れ</h2>  
-
+ 
 - Iot Coreで「モノ」の作成  
-作成方法については[こちら]()を参照  
-
-- Iot Coreで「モノ」の作成  
-  作成方法については[こちら]()を参照  
+  作成方法については[こちら](https://github.com/ksaplabo-org/aircondition#awsiot-core%E3%81%A7%E3%83%A2%E3%83%8E%E6%83%85%E5%A0%B1%E3%82%92%E4%BD%9C%E6%88%90)を参照  
