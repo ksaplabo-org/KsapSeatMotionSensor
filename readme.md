@@ -3,6 +3,8 @@
 ## 目次  
 - [全体概要](#content1)  
 - [ESP32で人感センサの操作](#content2)  
+- [Raspberry Piでデータ送受信](#content3)  
+
 
 <h2 id="content1">全体概要</h2>  
 
@@ -26,8 +28,16 @@
 
 <h2 id="content2">ESP32で人感センサの操作</h2>  
 
+人感センサの仕組みについては[こちら](./%E6%8A%80%E8%A1%93%E8%AA%BF%E6%9F%BB.md)を参照  
+
+ESP32と人感センサの配線は以下のように組む  
+※配線図用意  
+
+ソースは以下のようになる
+※ソース説明  
 
 
+<h2 id="content3">Raspberry Piでデータ送受信</h2>  
 
-
+Raspberry Piのセットアップは[こちら](https://github.com/ksaplabo-org/Raspi-Setup)を参照  
 
