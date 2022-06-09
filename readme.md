@@ -48,3 +48,23 @@ Raspberry Piのセットアップは[こちら](https://github.com/ksaplabo-org/
  
 - Iot Coreで「モノ」の作成  
   作成方法については[こちら](https://github.com/ksaplabo-org/aircondition#awsiot-core%E3%81%A7%E3%83%A2%E3%83%8E%E6%83%85%E5%A0%B1%E3%82%92%E4%BD%9C%E6%88%90)を参照  
+  モノの名前は任意で作成  
+
+  MQTTテストクライアントで受信するとこを確認出来たら、DynamoDBの作成を行う  
+
+- DynamoDBの作成  
+  今回はDynamoDBを2つ用意する。  
+  1.受信したデータを全て登録するDynamoDB  
+  2.座席名ごとに着席情報を管理するDynamoDB  
+  
+  1.受信したデータを全て登録するDynamoDB  
+
+  DynamoDBを作成方法は[こちら](https://github.com/ksaplabo-org/aircondition#aws%E5%8F%97%E4%BF%A1%E3%81%97%E3%81%9F%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92dynamodb%E3%81%AB%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B)を参照  
+  今回作成するDynamoDB名は以下の通り ※名前は任意  
+  DynamoDB名：ksap-seatingstatehistory-tbl  
+  
+  DynamoDBのコンソール画面から「テーブル」＞「項目の探索」を選択し  
+  作成したDynamoDBを選択  
+  「項目の作成」を選択して、以下のテストデータを作成  
+  ![1DynamoDB](./img/1DynamoDB.png)  
+
