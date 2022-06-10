@@ -250,9 +250,16 @@ S3の静的ホスティングサービスを使用して公開するソースを
 - css  
 ソースはこちら[style.css](./ksap-seatmotion/assets/css/style.css)  
 ※ソースの説明は省略する  
+- img  
+状態更新表示用の画像[img](./ksap-seatmotion/assets/img/)
 
 - javascript
 ソースはこちら[main.js](./ksap-seatmotion/assets/js/main.js)  
 ソースはこちら[subMain.js](./ksap-seatmotion/assets/js/subMain.js)  
 ※ソース説明(main.js)  
+1行目：API GatewayでメモしたURLを記載するが、URLの語尾に"/seatmotionsource"を追加する
+6,12-32行目：API Gatewayにリクエストし、取得したデータから画面構築を行う関数  
+9行目：3秒に1回着席状態の更新を行う  
 
+ファイル構成はこのようになる  
+![1s3api](./img/structure.drawio)  
