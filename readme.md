@@ -141,6 +141,39 @@ Lambdaコンソールから「関数の作成」を選択
 詳細設定はそのままで、関数の作成を選択  
 ![1-3lambda](./img/1-3lambda.png)  
 
+「コードソース」に以下のソースをコピーして貼り付けする  
+[updateSeatingStateHistoryTableFunc.py](./lambda/updateSeatingStateHistoryTableFunc.py)  
+ファイル名も「updateSeatingStateHistoryTableFunc.py」に変更する。
+※ファイル名は任意である
+![1-4lambda](./img/1-4lambda.png)  
+
+ソースの説明  
+2行目：DynamoDBへの接続はboto3というライブラリを使用  
+8~13行目：テーブルに更新されたデータを取得  
+19~20行目：「ksap-seatingstate-tbl」のテーブルオブジェクトを取得  
+23~26行目：「ksap-seatingstate-tbl」へデータ更新  
+
+ソースを作り終えたら、トリガーの設定を行う  
+「設定」タブを選択し、「トリガーを追加」を選択  
+![1-5lambda](./img/1-5lambda.png)  
+
+「トリガーを選択」のプルダウンから「DynamoDB」を選択し  
+「DynamoDBテーブル」は「ksap-seatingstatehistory-tbl」を選択  
+後の設定はデフォルトのまま、右下の「追加」を選択  
+![1-6lambda](./img/1-6lambda.png)  
+
+関数の定義画面に戻るので、そこでDynamoDBがトリガーに追加されています  
+![1-7lambda](./img/1-7lambda.png)  
+
+以上で1つ目の関数の作成は終わり  
 
 
+2.getSeatingStateTableFunc  
 
+updateSeatingStateHistoryTableFuncと同様の出順で作成  
+※関数名・ファイル名は「getSeatingStateTableFunc」  
+※トリガーにDynamoDBの登録はしません  
+以下のソースをコピペしてください  
+[getSeatingStateTableFunc.py](./lambda/getSeatingStateTableFunc.py)  
+
+ソースの説明  
