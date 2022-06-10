@@ -9,6 +9,7 @@
 - [IAMロールの作成](#content6)  
 - [Lambdaの作成](#content7)  
 - [API Gatewayの作成](#content8)  
+- [公開するWebアプリケーションの作成](#content9)  
 
 <h2 id="content1">全体概要</h2>  
 
@@ -233,6 +234,7 @@ APIseatstage ステージエディターにあるURLは後で使用するため�
 ![1-9api](./img/1-9api.png)  
 
 
+<h2 id="content9">公開するWebアプリケーションの作成</h2>  
 
-
+aaa
 
