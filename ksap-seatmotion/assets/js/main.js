@@ -2,8 +2,10 @@ posturl = "https://n2vcdsv6gd.execute-api.ap-northeast-1.amazonaws.com/APIseatst
 var jsondata = "";
 
 $(document).ready(function(){
+
     updateSeat();
 
+    //3秒に1回着席情報を更新する
     setInterval(updateSeat,3000);
 })
 
