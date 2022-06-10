@@ -149,9 +149,9 @@ Lambdaコンソールから「関数の作成」を選択
 
 ソースの説明  
 2行目：DynamoDBへの接続はboto3というライブラリを使用  
-8~13行目：テーブルに更新されたデータを取得  
-19~20行目：「ksap-seatingstate-tbl」のテーブルオブジェクトを取得  
-23~26行目：「ksap-seatingstate-tbl」へデータ更新  
+8-13行目：テーブルに更新されたデータを取得  
+19-20行目：「ksap-seatingstate-tbl」のテーブルオブジェクトを取得  
+23-26行目：「ksap-seatingstate-tbl」へデータ更新  
 
 ソースを作り終えたら、トリガーの設定を行う  
 「設定」タブを選択し、「トリガーを追加」を選択  
@@ -177,3 +177,5 @@ updateSeatingStateHistoryTableFuncと同様の出順で作成
 [getSeatingStateTableFunc.py](./lambda/getSeatingStateTableFunc.py)  
 
 ソースの説明  
+4-5行目：「ksap-seatingstate-tbl」のテーブルオブジェクトを取得  
+10-14行目：テーブルデータを読み取り、読み取ったデータをreturnする  
