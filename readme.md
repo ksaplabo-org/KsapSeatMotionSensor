@@ -167,7 +167,7 @@ Lambdaコンソールから「関数の作成」を選択
 
 以上で1つ目の関数の作成は終わり  
 
-
+<br>
 2.getSeatingStateTableFunc  
 
 updateSeatingStateHistoryTableFuncと同様の出順で作成  
