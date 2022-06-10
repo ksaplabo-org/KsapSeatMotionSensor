@@ -1,4 +1,4 @@
-posturl = "https://ogqmzmiqhf.execute-api.ap-northeast-1.amazonaws.com/APIseatstage/seatmotionresource";
+posturl = "https://n2vcdsv6gd.execute-api.ap-northeast-1.amazonaws.com/APIseatstage/seatmotionresource";
 var jsondata = "";
 
 $(document).ready(function(){

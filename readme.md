@@ -8,6 +8,7 @@
 - [DynamoDBの作成](#content5)  
 - [IAMロールの作成](#content6)  
 - [Lambdaの作成](#content7)  
+- [API Gatewayの作成](#content8)  
 
 <h2 id="content1">全体概要</h2>  
 
@@ -143,8 +144,6 @@ Lambdaコンソールから「関数の作成」を選択
 
 「コードソース」に以下のソースをコピーして貼り付けする  
 [updateSeatingStateHistoryTableFunc.py](./lambda/updateSeatingStateHistoryTableFunc.py)  
-ファイル名も「updateSeatingStateHistoryTableFunc.py」に変更する。
-※ファイル名は任意である
 ![1-4lambda](./img/1-4lambda.png)  
 
 ソースの説明  
@@ -171,7 +170,7 @@ Lambdaコンソールから「関数の作成」を選択
 2.getSeatingStateTableFunc  
 
 updateSeatingStateHistoryTableFuncと同様の出順で作成  
-※関数名・ファイル名は「getSeatingStateTableFunc」  
+※関数名「getSeatingStateTableFunc」とする  
 ※トリガーにDynamoDBの登録はしません  
 以下のソースをコピペしてください  
 [getSeatingStateTableFunc.py](./lambda/getSeatingStateTableFunc.py)  
@@ -179,3 +178,61 @@ updateSeatingStateHistoryTableFuncと同様の出順で作成
 ソースの説明  
 4-5行目：「ksap-seatingstate-tbl」のテーブルオブジェクトを取得  
 10-14行目：テーブルデータを読み取り、読み取ったデータをreturnする  
+
+
+<h2 id="content8">API Gatewayの作成</h2>
+
+lambda関数「getSeatingStateTableFunc」へリクエストするためのGatewayを作成します  
+
+コンソール画面から「APIを作成」を選択  
+![1-1api](./img/1-1api.png)  
+
+APIタイプを選択の中の上から3つ目の「REST API」を選択  
+![1-2api](./img/1-2api.png)  
+
+API名を「SeatMotionAPI」とし、他の設定はデフォルトのまま「APIの作成」を選択  
+![1-3api](./img/1-3api.png)  
+
+画面が遷移したら、アクションから「リソースの作成」を選択　　
+![1-4api](./img/1-4api.png)  
+
+リソース名を「SeatMotionResource」にし、「リソースの作成」を選択  
+![1-5api](./img/1-5api.png)  
+
+アクションから「メソッドの作成」を選択し、プルダウンの中から「POST」を選択  
+選択すると、横にチェックマークが出てくるので、チェックマークをクリックする  
+すると、以下の画面が出てくるので、Lambda関数のところに「getSeatingStateTableFunc」と入力し  
+「保存」を選択する　　
+![1-6api](./img/1-6api.png)  
+
+「Lambda関数に権限を追加する」というダイアログが出てくるので、「OK」をクリック  
+
+アクションから「CORSの有効化」を選択し、「CORSを有効化して～～」を選択する  
+![1-7api](./img/1-7api.png)  
+
+「メソッド変更の確認」ダイアログが表示されるため、「はい、既存の値を置き換えます」をクリック  
+
+リソースツリーで「POST」を選択している状態で、右の「統合リクエスト」を選択  
+![1-100api](./img/1-100api.png)  
+
+下の方に「マッピングテンプレート」があるので、そこを選択し  
+リクエスト本文のパススルーで、「テンプレートが定義されていない場合（推奨）」を選択  
+「マッピングテンプレートの追加」を選択し、テキストに「application/x-www-form-urlencoded」を入力し
+チェックマークをクリックする  
+![1-10api](./img/1-10api.png)  
+
+テンプレートの生成は「メソッドリクエストのパススルー」を選択し、「保存」をクリック  
+![1-11api](./img/1-11api.png)  
+
+アクションから「APIのデプロイ」を選択するとダイアログが表示されるので  
+「デプロイされるステージ」欄に「[新しいステージ]」を選択  
+「ステージ名」を「APIseatstage」にし「デプロイ」をクリックする  
+![1-8api](./img/1-8api.png)  
+
+APIseatstage ステージエディターにあるURLは後で使用するため、コピーしておく  
+![1-9api](./img/1-9api.png)  
+
+
+
+
+
