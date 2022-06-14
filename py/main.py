@@ -14,14 +14,16 @@ detctor_list = []
 detctor_list.append(md.motion_detector(ESP1_MAC_ADDRESS))
 detctor_list.append(md.motion_detector(ESP2_MAC_ADDRESS))
 
+#データ送信クラスのインスタンス生成
 logger = logger.Logger()
 
 while True:    
     for detector in detctor_list:
+        #受信したデータの読み込み
         print(detector.read())
         print(count)
 
-    #30秒カウント
+    #着席情報の送信を一定間隔で行う
     if count == 10:
         #ESPの数だけループ
         for detector in detctor_list:

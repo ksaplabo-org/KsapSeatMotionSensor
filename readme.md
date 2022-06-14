@@ -50,7 +50,21 @@ Arduino IDEの使い方は[こちら](https://github.com/ksaplabo-org/ksapDoorOp
 
 Raspberry Piのセットアップは[こちら](https://github.com/ksaplabo-org/Raspi-Setup)を参照  
 
-※ソースは検討中  
+各ライブラリのインストールが必要  
+- MQTT通信するためのライブラリ  
+```
+$ pip3 install paho-mqtt python-etcd
+```
+- bluetoothを使用するためのライブラリ  
+```
+$ sudo apt-get install python3-pip libglib2.0-dev
+$ sudo pip3 install bluepy
+```
+
+ソースは以下のようになる  
+[logget.py](./py/logger.py)  
+[main.py](./py/main.py)  
+[motion_detector.py](./py/motion_detector.py)  
 
 
 <h2 id="content4">モノの作成</h2>  
