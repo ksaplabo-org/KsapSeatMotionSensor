@@ -16,7 +16,7 @@ class motion_detector:
         self._peripheral = btle.Peripheral()
 
         self.__is_seating_list = []
-        for _ in range(16):
+        for _ in range(15):
             self.__is_seating_list.append(False)
 
         self.__count = 0
@@ -72,7 +72,7 @@ class motion_detector:
                 ret = ret + 1
         
         #配列初期化
-        for _ in range(16):
+        for _ in range(15):
             self.__is_seating_list.append(False)
 
         self.__count = 0

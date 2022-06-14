@@ -4,15 +4,15 @@ import logger
 
 count = 0
 
-#使用しているESPの数だけ宣言する
+#新しくESPを追加する場合、マックアドレスを追加する
 ESP1_MAC_ADDRESS = "78:21:84:7f:6D:DE"
 ESP2_MAC_ADDRESS = "40:91:51:BE:F7:8E"
-#ESP2_MAC_ADDRESS = "40:91:51:BE:E8:5A"
+#ESP3_MAC_ADDRESS = "40:91:51:BE:E8:5A"
 
+#新しくESPを追加する場合、追加したMACアドレスを配列にappendする
 detctor_list = []
-#detctor_list.append(md.motion_detector(ESP1_MAC_ADDRESS))
+detctor_list.append(md.motion_detector(ESP1_MAC_ADDRESS))
 detctor_list.append(md.motion_detector(ESP2_MAC_ADDRESS))
-
 
 logger = logger.Logger()
 
@@ -22,7 +22,7 @@ while True:
         print(count)
 
     #30秒カウント
-    if count == 15:
+    if count == 10:
         #ESPの数だけループ
         for detector in detctor_list:
             #着席状態を確認
