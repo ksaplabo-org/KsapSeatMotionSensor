@@ -3,7 +3,6 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 
-
 BLEServer *pServer;
 BLEService *pService;
 BLECharacteristic *pCharacteristic;
@@ -13,7 +12,6 @@ uint8_t value = 0;
 
 // PIN number
 #define GPIOINPUT 27
-#define GPIOOUTPUT 25
 
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
@@ -21,24 +19,27 @@ uint8_t value = 0;
 #define SERVICE_UUID        "D5875408-FA51-4763-A75D-7D33CECEBC31"
 #define CHARACTERISTIC_UUID "A4F01D8C-A037-43B6-9050-1876A8C23584"
 
+// コールバック関数
 class MyServerCallbacks: public BLEServerCallbacks {
+    //ESP接続時のイベント
     void onConnect(BLEServer* pServer) {
       Serial.println("Connected!");
       deviceConnected = true;
     };
 
+    //ESP切断時のイベント
     void onDisconnect(BLEServer* pServer) {
       Serial.println("DisConnected!");
       deviceConnected = false;
-      // Start advertising
+      // 再接続を行う
       pServer->getAdvertising()->start();
       Serial.println("Waiting a client connection to notify...");      
     }
 };
 
+//シリアルボードと入力ピンの設定
 void doInitialize() {
   Serial.begin(115200);
-  //人感センサの入力ピン
   pinMode(GPIOINPUT, INPUT);  
 }
 
@@ -47,11 +48,12 @@ void setup() {
   //初期処理
   doInitialize();
   
-  // Create the BLE Device
+  //ESPのデバイス名を決定
   BLEDevice::init("ESP32_Local_Device");
 
   // Create the BLE Server
   pServer = BLEDevice::createServer();
+  //コールバック関数の登録
   pServer->setCallbacks(new MyServerCallbacks());
 
   // Create the BLE Service
@@ -74,20 +76,25 @@ void setup() {
   pService->start();
 
   // Start advertising
+  //接続待ち状態となる
   pServer->getAdvertising()->start();
   Serial.println("Waiting a client connection to notify...");
 }
 
+//接続が出来たら、ループ処理に入る
 void loop() {
 
   if (deviceConnected) {
     
-    //人感センサの読み取り値が１
+    //人感センサからの入力がある場合
     if (digitalRead(GPIOINPUT) == 1){
+      //1を送信
       pCharacteristic->setValue("1");
       pCharacteristic->notify();
       Serial.println(1);
+    //人感センサからの入力がない場合
     }else{
+      //0を送信
       pCharacteristic->setValue("0");
       pCharacteristic->notify();
       Serial.println(0);

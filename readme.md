@@ -41,7 +41,9 @@ ESP32と人感センサの配線は以下のように組む
 
 ソースは以下のようになる  
 [seatmotionsensor.ino](./ino/seatmotionsensor.ino)  
-※ソース説明  
+
+Arduino IDEを使用して、ソースをコンパイルする  
+Arduino IDEの使い方は[こちら](https://github.com/ksaplabo-org/ksapDoorOpener#esp32%E3%81%8B%E3%82%89servo%E3%82%92%E5%8B%95%E3%81%8B%E3%81%99)を参照  
 
 
 <h2 id="content3">Raspberry Piでデータ送受信</h2>  
@@ -259,7 +261,7 @@ S3の静的ホスティングサービスを使用して公開するソースを
 ソースはこちら[main.js](./ksap-seatmotion/assets/js/main.js)  
 ソースはこちら[subMain.js](./ksap-seatmotion/assets/js/subMain.js)  
 ※ソース説明(main.js)  
-1行目：API GatewayでメモしたURLを記載するが、URLの語尾に"/seatmotionsource"を追加する
+1行目：API GatewayでメモしたURLを記載するが、URLの語尾に"/seatmotionsource"を追加する  
 6,12-32行目：API Gatewayにリクエストし、取得したデータから画面構築を行う関数  
 9行目：3秒に1回着席状態の更新を行う  
 
