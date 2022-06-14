@@ -4,17 +4,34 @@ import boto3
 
 def lambda_handler(event, context):
     
+    print(event)
     #SeatingStateTableに送信したいデータを取得
     for record in event['Records']:
         
         try:
             print(record['dynamodb'])
-            name_data = record['dynamodb']['NewImage']['SeatName']['S']
             state_data = record['dynamodb']['NewImage']['State']['S']
+            mac_address = record['dynamodb']['NewImage']['EspMacAddress']['S']
         except Exception as e:
             print(e)
             continue
     
+        print(mac_address)
+        
+        #DynamoDB接続処理
+        master_dynamodb = boto3.resource('dynamodb')
+        master_table = master_dynamodb.Table('ksap-seatingmaster-tbl')
+    
+        #マスターテーブルのMACアドレスから名前を取得
+        res = master_table.get_item(
+            Key={
+                'EspMacAddress': mac_address
+            }
+        )
+    
+        item = res['Item']
+        print(item)
+        
         #DynamoDB接続処理
         dynamodb = boto3.resource('dynamodb')
         table = dynamodb.Table('ksap-seatingstate-tbl')
@@ -22,7 +39,8 @@ def lambda_handler(event, context):
         #SeatNameをキーに値を状態を更新
         ret = table.put_item(
             Item={
-                'SeatName': name_data,
+                'SeatName': item['SeatName'],
+                'SeatNameJP':item['SeatNameJP'],
                 'State':state_data
             }
         )

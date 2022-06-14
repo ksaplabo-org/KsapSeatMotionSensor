@@ -3,143 +3,96 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 
-// BLE characteristic
-#define SERVICE_UUID           "28b0883b-7ec3-4b46-8f64-8559ae036e4e"
-#define CHARACTERISTIC_UUID_TX "2049779d-88a9-403a-9c59-c7df79e1dd7c"
 
-// BLE Device name
-#define DEVICENAME "ESP32"
+BLEServer *pServer;
+BLEService *pService;
+BLECharacteristic *pCharacteristic;
 
-// serial speed
-#define SPI_SPEED 115200
+bool deviceConnected = false;
+uint8_t value = 0;
 
 // PIN number
 #define GPIOINPUT 27
 #define GPIOOUTPUT 25
 
-bool is_seatsettings[29];
-int count_motion_sensor = 0;
+// See the following for generating UUIDs:
+// https://www.uuidgenerator.net/
 
-// characteristic valueable
-BLECharacteristic *pCharacteristicTX;
-bool deviceConnected = false;
+#define SERVICE_UUID        "D5875408-FA51-4763-A75D-7D33CECEBC31"
+#define CHARACTERISTIC_UUID "A4F01D8C-A037-43B6-9050-1876A8C23584"
 
-// send data
-int send_cnt = 0;
+class MyServerCallbacks: public BLEServerCallbacks {
+    void onConnect(BLEServer* pServer) {
+      Serial.println("Connected!");
+      deviceConnected = true;
+    };
 
-// Server Callbacks of Connection
-class funcServerCallbacks: public BLEServerCallbacks{
-    void onConnect(BLEServer* pServer){
-        deviceConnected = true;
-    }
-    void onDisconnect(BLEServer* pServer){
-        deviceConnected = false;
+    void onDisconnect(BLEServer* pServer) {
+      Serial.println("DisConnected!");
+      deviceConnected = false;
+      // Start advertising
+      pServer->getAdvertising()->start();
+      Serial.println("Waiting a client connection to notify...");      
     }
 };
 
-// Characteristic
-void doPrepare(BLEService *pService){
-    // Create Characteristic of Notify
-    pCharacteristicTX = pService->createCharacteristic(
-                      CHARACTERISTIC_UUID_TX,
-                      BLECharacteristic::PROPERTY_NOTIFY
-                    );
-    pCharacteristicTX->addDescriptor(new BLE2902());
-}
-
 void doInitialize() {
-  Serial.begin(SPI_SPEED);
+  Serial.begin(115200);
   //人感センサの入力ピン
-  pinMode(GPIOINPUT, INPUT);
-  //LEDの出力ピン
-  pinMode(GPIOOUTPUT, OUTPUT);
-  
+  pinMode(GPIOINPUT, INPUT);  
 }
 
 void setup() {
-  // Initialize the pinMode
+
+  //初期処理
   doInitialize();
-
-  // Initialize the BLE environment
-  BLEDevice::init(DEVICENAME);
   
-  // Create the server
-  BLEServer *pServer = BLEDevice::createServer();
+  // Create the BLE Device
+  BLEDevice::init("ESP32_Local_Device");
 
-  // Callback the server
-  pServer->setCallbacks(new funcServerCallbacks);
-  
-  // Create the service
-  BLEService *pService = pServer->createService(SERVICE_UUID);
+  // Create the BLE Server
+  pServer = BLEDevice::createServer();
+  pServer->setCallbacks(new MyServerCallbacks());
 
-  // Create the characteristic
-  doPrepare(pService);
-  
+  // Create the BLE Service
+  pService = pServer->createService(SERVICE_UUID);
+
+  // Create a BLE Characteristic
+  pCharacteristic = pService->createCharacteristic(
+                      CHARACTERISTIC_UUID,
+                      BLECharacteristic::PROPERTY_READ   |
+                      BLECharacteristic::PROPERTY_WRITE  |
+                      BLECharacteristic::PROPERTY_NOTIFY |
+                      BLECharacteristic::PROPERTY_INDICATE
+                    );
+
+  // https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.descriptor.gatt.client_characteristic_configuration.xml
+  // Create a BLE Descriptor
+  pCharacteristic->addDescriptor(new BLE2902());
+
   // Start the service
   pService->start();
-  
-  BLEAdvertising *pAdvertising = pServer->getAdvertising();
-  pAdvertising->addServiceUUID(SERVICE_UUID);
-  pAdvertising->start();
 
-  // Wait Connect
-  Serial.println("Waiting to connect...");
-  while(!deviceConnected){delay(100);}
-
-  // Connection  
-  Serial.println("Connection!");
-
-  delay(100);
+  // Start advertising
+  pServer->getAdvertising()->start();
+  Serial.println("Waiting a client connection to notify...");
 }
 
 void loop() {
 
-  //人感センサの入力値を読み取り
-  int btnState = digitalRead(GPIOINPUT);
-  //入力値をシリアルボードに出力
-  Serial.println(btnState);
-
-  //人感センサからの入力があればフラグをTrue
-  if (btnState == 1){
-    is_seatsettings[count_motion_sensor] = true;
-  }else{ 
-    is_seatsettings[count_motion_sensor] = false;
-  }
-
-  //30秒立ったら
-  if (count_motion_sensor == 29){
-
-    int ret = 0;
+  if (deviceConnected) {
     
-    //配列の中にTureがあることを確認する
-    for(int i = 0; i<30; i++){
-      
-      //Trueがあれば
-      if (is_seatsettings[i] == true){
-        ret = ret + 1;
-      }
-    }
-
-    //動いたと判断したら
-    if (ret > 0){
-      pCharacteristicTX->setValue("sit");
-      pCharacteristicTX->notify();
-      digitalWrite(GPIOOUTPUT, HIGH);
-    //動いていなかったら
+    //人感センサの読み取り値が１
+    if (digitalRead(GPIOINPUT) == 1){
+      pCharacteristic->setValue("1");
+      pCharacteristic->notify();
+      Serial.println(1);
     }else{
-      pCharacteristicTX->setValue("stand");
-      pCharacteristicTX->notify();
-      digitalWrite(GPIOOUTPUT, LOW);
+      pCharacteristic->setValue("0");
+      pCharacteristic->notify();
+      Serial.println(0);
     }
-
-    //カウンターのリセット
-    count_motion_sensor = 0;
     
-  }else{
-    //約30秒カウントする 
-    count_motion_sensor = count_motion_sensor + 1;  
-  }
-
-  //1秒でループする
+  } 
   delay(1000);
 }

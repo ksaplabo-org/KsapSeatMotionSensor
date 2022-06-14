@@ -1,4 +1,4 @@
-posturl = "https://n2vcdsv6gd.execute-api.ap-northeast-1.amazonaws.com/APIseatstage/seatmotionresource";
+posturl = "APIゲートウェイのURL";
 var jsondata = "";
 
 $(document).ready(function(){

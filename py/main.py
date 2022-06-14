@@ -1,30 +1,41 @@
-#!/usr/bin/env python3
+import motion_detector as md
+import time
+import logger
 
-import sys
-import asyncio
-from logging import getLogger, StreamHandler, Formatter, DEBUG, INFO
-from blehandler import BleHandler
-from typing import List
-from bleak import discover
+count = 0
 
-TARGET_ADDRESS = "78:21:84:7F:6D:DE"
+#使用しているESPの数だけ宣言する
+ESP1_MAC_ADDRESS = "78:21:84:7f:6D:DE"
+ESP2_MAC_ADDRESS = "40:91:51:BE:F7:8E"
+#ESP2_MAC_ADDRESS = "40:91:51:BE:E8:5A"
 
-async def main():
-    while True:
-        print('start device scan...')
-        tasks = []
-        devices:List = await discover()
+detctor_list = []
+#detctor_list.append(md.motion_detector(ESP1_MAC_ADDRESS))
+detctor_list.append(md.motion_detector(ESP2_MAC_ADDRESS))
 
-        for device in devices:
-            if device.address == TARGET_ADDRESS:
-                handler = BleHandler(TARGET_ADDRESS,)
-                tasks.append(asyncio.ensure_future(handler()))
-                print(f'found target device : {device}. discover process end.')
-        
-        if len(tasks) > 0:
-            [await task for task in tasks]
-        else:
-            print('target device not found. rescan after sleep 5s.')
-        await asyncio.sleep(5)
 
-asyncio.run(main())
+logger = logger.Logger()
+
+while True:    
+    for detector in detctor_list:
+        print(detector.read())
+        print(count)
+
+    #30秒カウント
+    if count == 15:
+        #ESPの数だけループ
+        for detector in detctor_list:
+            #着席状態を確認
+            if detector.check_state():
+                print("Sit")
+                logger.write(detector._addr,"Sit")    
+            else:
+                print("Stand")
+                logger.write(detector._addr,"Stand")
+        count = 0
+        continue
+
+    count = count + 1
+    time.sleep(1)
+
+

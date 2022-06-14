@@ -13,10 +13,10 @@ class Logger():
         self.mqtt.connect()
 
     #ログの登録
-    def write(self, mes):
+    def write(self, mac_address, state):
         #メッセージを作成
         tmstr = "{0:%Y-%m-%d %H:%M:%S}".format(datetime.datetime.now())
-        json_msg = json.dumps({"SeatName": "Oosawa", "State":mes, "GetDateTime": tmstr})
+        json_msg = json.dumps({"GetDateTime": tmstr, "State":state, "EspMacAddress":mac_address})
         #MQTT送信
         self.mqtt.publish(json_msg)
 
@@ -32,8 +32,8 @@ class Mqtt():
     MQTT_TOPIC_PUB = "ksap-seatmotionsensor"
     MQTT_TOPIC_SUB = "ksap-seatmotionsensorSub"
     MQTT_ROOTCA = "/home/pi/Downloads/AmazonRootCA1.pem"
-    MQTT_CERT = "/home/pi/Downloads/2caffa60cf5e7478fcfbf0a6ca086c06d6cc38e5fdb95423e668c9e91311fec7-certificate.pem.crt"
-    MQTT_PRIKEY = "/home/pi/Downloads/2caffa60cf5e7478fcfbf0a6ca086c06d6cc38e5fdb95423e668c9e91311fec7-private.pem.key"
+    MQTT_CERT = "/home/pi/Downloads/b346fb4b6327a94230d3bc7978d5fc9fa13e9c32130210d300bf9dcc94b08fb6-certificate.pem.crt"
+    MQTT_PRIKEY = "/home/pi/Downloads/b346fb4b6327a94230d3bc7978d5fc9fa13e9c32130210d300bf9dcc94b08fb6-private.pem.key"
 
     def __init__(self):
 
