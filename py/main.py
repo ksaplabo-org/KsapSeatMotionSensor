@@ -6,7 +6,7 @@ ESP1_MAC_ADDRESS = "78:21:84:7f:6d:de"
 ESP2_MAC_ADDRESS = "40:91:51:be:e8:5a"
  
 detctor_list = []
-#detctor_list.append(detector.Detector(ESP1_MAC_ADDRESS))
+detctor_list.append(detector.Detector(ESP1_MAC_ADDRESS))
 detctor_list.append(detector.Detector(ESP2_MAC_ADDRESS))
 
 scanner = btle.Scanner(0)
@@ -15,7 +15,7 @@ __logger = logger.Logger()
 while True: 
   
   #Bluetoothデバイスの検索
-  devices = scanner.scan(3.5)
+  devices = scanner.scan(2.5)
 
   #検索結果分ループ
   for device in devices:
