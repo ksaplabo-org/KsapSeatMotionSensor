@@ -1,43 +1,41 @@
-import motion_detector as md
-import time
+import detector
 import logger
+from bluepy import btle
 
-count = 0
-
-#新しくESPを追加する場合、マックアドレスを追加する
-ESP1_MAC_ADDRESS = "78:21:84:7f:6D:DE"
-ESP2_MAC_ADDRESS = "40:91:51:BE:F7:8E"
-#ESP3_MAC_ADDRESS = "40:91:51:BE:E8:5A"
-
-#新しくESPを追加する場合、追加したMACアドレスを配列にappendする
+ESP1_MAC_ADDRESS = "78:21:84:7f:6d:de"
+ESP2_MAC_ADDRESS = "40:91:51:be:e8:5a"
+ 
 detctor_list = []
-detctor_list.append(md.motion_detector(ESP1_MAC_ADDRESS))
-detctor_list.append(md.motion_detector(ESP2_MAC_ADDRESS))
+#detctor_list.append(detector.Detector(ESP1_MAC_ADDRESS))
+detctor_list.append(detector.Detector(ESP2_MAC_ADDRESS))
 
-#データ送信クラスのインスタンス生成
-logger = logger.Logger()
+scanner = btle.Scanner(0)
+__logger = logger.Logger()
 
-while True:    
-    for detector in detctor_list:
-        #受信したデータの読み込み
-        print(detector.read())
-        print(count)
+while True: 
+  
+  #Bluetoothデバイスの検索
+  devices = scanner.scan(3.5)
 
-    #着席情報の送信を一定間隔で行う
-    if count == 10:
-        #ESPの数だけループ
-        for detector in detctor_list:
-            #着席状態を確認
-            if detector.check_state():
-                print("Sit")
-                logger.write(detector._addr,"Sit")    
+  #検索結果分ループ
+  for device in devices:
+
+    #設置しているデバイス分ループ
+    for esp_device in detctor_list:
+      
+      #MACアドレスが一致するものを探す
+      if esp_device.get_addr() == device.addr:
+        
+        #取得した情報を展開
+        for (adTypeCode, description, valueText) in device.getScanData():
+          #print(f'    {description}：{valueText}')
+          if description == "16b Service Data":
+
+            #前回の着席状況を比較し、異なる場合はログを送信
+            print(valueText[4:6])
+            if not esp_device.compare_res(valueText[4:6]):
+              print('send')
+              __logger.write(esp_device.get_addr(),esp_device.get_state())
             else:
-                print("Stand")
-                logger.write(detector._addr,"Stand")
-        count = 0
-        continue
-
-    count = count + 1
-    time.sleep(1)
-
+              print('pass')
 

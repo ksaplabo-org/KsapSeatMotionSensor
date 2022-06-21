@@ -12,6 +12,11 @@ body {
     margin:auto;
 }
 
+.plate-frame{
+    display: block;
+    width:100%;
+}
+
 .plate{
     width: 360px;
     height: 65px;
@@ -20,6 +25,7 @@ body {
     margin: auto;
     margin-top: 20px;
     box-shadow: 0 0 8px gray;
+    display: inline-block;
 }
 
 .status-description{
@@ -49,9 +55,22 @@ body {
 .status{
     display: inline-block;
     vertical-align: top;
-    text-align: right;
-    width:30%;
+    text-align: center;
     margin-top:0px;
+    width: 71px;
+}
+
+.telework{
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    width:50%;
+    margin-top:2px;
+}
+
+.telework-mark{
+    width: 40px;
+    height:60px;
 }
 
 .mark-frame{
@@ -59,6 +78,7 @@ body {
     border-width: 2px;
     border-color: rgb(134, 134, 134);
     width: fit-content;
+    margin-left: 15px;
 }
 
 .mark{
@@ -80,3 +100,25 @@ body {
 #skeleton{
     display: none;
 }
+
+.telework-btn {
+    display: inline-block;
+    vertical-align: top;
+    background: #3399FF;
+    color: #ffffff;
+    width: 90px;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    overflow: hidden;
+    margin-top:30px;
+    border-bottom: solid 5px #003399;
+}
+    
+.telework-btn:active {
+    -webkit-transform: translateY(5px);
+    transform: translateY(5px);
+    border-bottom: none;
+} 
+
+   

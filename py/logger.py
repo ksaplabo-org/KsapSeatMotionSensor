@@ -13,9 +13,15 @@ class Logger():
         self.mqtt.connect()
 
     #ログの登録
-    def write(self, mac_address, state):
+    def write(self, mac_address, num_state):
         #メッセージを作成
         tmstr = "{0:%Y-%m-%d %H:%M:%S}".format(datetime.datetime.now())
+
+        if num_state == "31":
+            state = "Sit"
+        else:
+            state = "Stand"
+
         json_msg = json.dumps({"GetDateTime": tmstr, "State":state, "EspMacAddress":mac_address})
         #MQTT送信
         self.mqtt.publish(json_msg)
