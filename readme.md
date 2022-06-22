@@ -20,13 +20,13 @@
 
 支店管理部の在籍情報をリアルタイムで知ることができるシステムの開発  
 
-※以下は人感センサを利用したシステムの説明を行う
-※各ソースは感圧センサを利用したコーディングとなっているため  
+※以下は人感センサを利用したシステムの説明を行う  
+※一部ソースは感圧センサを利用したコーディングとなっているため  
   人感センサを利用したソースはHistoryから参照  
 
 ・システム説明  
-図の左半分：管理部の座席足元に人感センサを設置して、1秒単位で席にいるかどうかをESP32でキャッチ  
-           それを30秒間続けて、30秒に1回着席情報をRaspberry Piへ送信  
+図の左半分：管理部の座席足元に人感センサを設置して、席にいるかどうかをESP32でキャッチ  
+           着席情報をRaspberry Piへ送信  
            それを受け取ったRaspberry PiがIoT Coreへパブリッシュする  
 
 図の右半分：IoT Coreの受信をトリガーに、DynamoDBへ日時をキーとしてデータ登録  
@@ -35,7 +35,7 @@
            S3に保存してある、JavaScriptからAPIGateway、Lambdaを介して在籍情報を取得  
            データを成形して、ブラウザ上に表示する  
 
-文章での説目では分かりずらいので、それぞれの機能実装手順を以下にしてしていく  
+文章での説明では分かりずらいので、それぞれの機能実装手順を以下に示す  
 
 
 <h2 id="content2">ESP32で人感センサの操作</h2>  
@@ -171,12 +171,6 @@ Lambdaコンソールから「関数の作成」を選択
 [updateSeatingStateHistoryTableFunc.py](./lambda/updateSeatingStateHistoryTableFunc.py)  
 ![1-4lambda](./img/1-4lambda.png)  
 
-ソースの説明  
-2行目：DynamoDBへの接続はboto3というライブラリを使用  
-8-13行目：テーブルに更新されたデータを取得  
-19-20行目：「ksap-seatingstate-tbl」のテーブルオブジェクトを取得  
-23-26行目：「ksap-seatingstate-tbl」へデータ更新  
-
 ソースを作り終えたら、トリガーの設定を行う  
 「設定」タブを選択し、「トリガーを追加」を選択  
 ![1-5lambda](./img/1-5lambda.png)  
@@ -199,10 +193,6 @@ updateSeatingStateHistoryTableFuncと同様の出順で作成
 ※トリガーにDynamoDBの登録はしません  
 以下のソースをコピペしてください  
 [getSeatingStateTableFunc.py](./lambda/getSeatingStateTableFunc.py)  
-
-ソースの説明  
-4-5行目：「ksap-seatingstate-tbl」のテーブルオブジェクトを取得  
-10-14行目：テーブルデータを読み取り、読み取ったデータをreturnする  
 
 
 <h2 id="content8">API Gatewayの作成</h2>
@@ -266,24 +256,17 @@ S3の静的ホスティングサービスを使用して公開するソースを
 
 - html  
 ソースはこちら[SeatingInfo.html](./ksap-seatmotion/SeatingInfo.html)  
-※ソース説明  
-18-20行目：更新ボタンの設定  
-22-31行目：着席状態を表示するためのスケルトン  
-           (javascriptで子のスケルトンをコピーして、名前と着席情報を表示する)  
 
 - css  
 ソースはこちら[style.css](./ksap-seatmotion/assets/css/style.css)  
-※ソースの説明は省略する  
+
 - img  
 状態更新表示用の画像[img](./ksap-seatmotion/assets/img/)
 
 - javascript
 ソースはこちら[main.js](./ksap-seatmotion/assets/js/main.js)  
 ソースはこちら[subMain.js](./ksap-seatmotion/assets/js/subMain.js)  
-※ソース説明(main.js)  
-1行目：API GatewayでメモしたURLを記載するが、URLの語尾に"/seatmotionsource"を追加する  
-6,12-32行目：API Gatewayにリクエストし、取得したデータから画面構築を行う関数  
-9行目：3秒に1回着席状態の更新を行う  
+
 
 ファイル構成はこのようになる  
 ![2s3](./img/2s3.png)  
@@ -318,6 +301,9 @@ S3の静的ホスティングサービスを使用して公開するソースを
 
 ESP32と感圧センサの配線図を以下に示す  
 ![感圧センサ](./img/感圧センサ.png)  
+
+ソースは以下を参照  
+[BLE_EddystoneTLM_Beacon.ino](./ino/BLE_EddystoneTLM_Beacon.ino)  
 
 感圧センサを使うことにより、着席情報を動体検知ではなく圧力検知になったため  
 着席情報を取得する精度が上がった  
