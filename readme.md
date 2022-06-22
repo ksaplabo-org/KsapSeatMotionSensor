@@ -312,8 +312,18 @@ S3の静的ホスティングサービスを使用して公開するソースを
 <h2 id="content12">残課題解決</h2>  
 
 ### システム精度の問題  
+
 感圧センサを利用することで解決した  
 システム構成図は[こちら](https://github.com/ksaplabo-org/KsapSeatMotionSensor/blob/master/external%20specification.md#%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E6%A7%8B%E6%88%90%E5%9B%B3)を参照  
 
-![感圧センサ](./img/感圧センサ.png)
+ESP32と感圧センサの配線図を以下に示す  
+![感圧センサ](./img/感圧センサ.png)  
+
+感圧センサを使うことにより、着席情報を動体検知ではなく圧力検知になったため  
+着席情報を取得する精度が上がった  
+
+### テレワークボタンを追加  
+
+公開するWeb画面を管理者用と閲覧者用に分け、管理者用の画面にテレワークボタンを追加した  
+機能については[こちら](https://github.com/ksaplabo-org/KsapSeatMotionSensor/blob/master/external%20specification.md#web%E7%94%BB%E9%9D%A2)を参照  
 
